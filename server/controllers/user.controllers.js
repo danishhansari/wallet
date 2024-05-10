@@ -1,4 +1,5 @@
 import User from "../models/user.models.js";
+import Account from "../models/account.models.js";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -31,6 +32,10 @@ const registerUser = async (req, res) => {
       const newUser = await User.create({
         ...body,
         password: hash,
+      });
+      await Account.create({
+        userID: newUser._id,
+        balance: (Math.random() * 10000 + 1).toFixed(2),
       });
       return res.status(201).json({ message: "Register successful", newUser });
     });
@@ -102,7 +107,7 @@ const searchUserProfile = async (req, res) => {
       { firstName: { $regex: query, $options: "i" } },
       { username: { $regex: query, $options: "i" } },
     ],
-  }).limit(10);
+  }).limit(10).select('-password');
   return res.status(200).json(user);
 };
 
