@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
 const accountSchema = new Schema({
-  username: {
+  userID: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
