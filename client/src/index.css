@@ -13,7 +13,7 @@
 }
 @layer components {
   .navAndPage {
-    @apply max-h-screen bg-white text-black w-full px-[2vw] py-2 md:py-4;
+    @apply max-h-screen bg-white text-black w-full p-2 ;
   }
   .btnPrimarySmall {
     @apply bg-[#1C1C1C] text-white font-medium  rounded-full hover:bg-[#4E4E4E] transition-colors md:text-lg py-1 px-3 md:py-2 md:px-6;

@@ -65,6 +65,7 @@ const loginUser = async (req, res) => {
         },
         process.env.JWT_SECRET
       );
+      isUserExists.password = undefined;
       return res.status(200).json({
         message: "logged in successfully",
         authToken: token,
@@ -107,7 +108,9 @@ const searchUserProfile = async (req, res) => {
       { firstName: { $regex: query, $options: "i" } },
       { username: { $regex: query, $options: "i" } },
     ],
-  }).limit(10).select('-password');
+  })
+    .limit(10)
+    .select("-password");
   return res.status(200).json(user);
 };
 
