@@ -1,4 +1,4 @@
-import Navbar from "../Navbar";
+import Navbar from "../components/Navbar";
 import Input from "../components/Input";
 const LoginPage = () => {
   return (
@@ -14,7 +14,7 @@ const LoginPage = () => {
             </h1>
 
             <form className="mt-12 md:mt-16 w-full" id="registerForm">
-              <div className="columnFlex">
+              <div className="columnFlex gap-y-2">
                 <Input
                   type="text"
                   name="username"
@@ -25,7 +25,6 @@ const LoginPage = () => {
                 <Input
                   type="password"
                   name="password"
-                  className="mt-4"
                   placeholder="Enter your password"
                   defaultValue={""}
                   onchange={""}

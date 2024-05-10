@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Cookie from "cookie-parser";
+import Cookies from "js-cookie";
 
-const PrivateRoute = ({ component }) => {
-  const authToken = Cookie.get("authorization");
+const PrivateRoute = ({ component: Component }) => {
+  const authToken = Cookies.get("authorization");
   const navigate = useNavigate();
   useEffect(() => {
     if (!authToken) {
       navigate("/login");
     }
   }, [authToken, navigate]);
-  return { component };
+  return <Component />;
 };
 
 export default PrivateRoute;
