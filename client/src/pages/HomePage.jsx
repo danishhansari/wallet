@@ -1,15 +1,35 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const HomePage = () => {
   const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const [user, setUser] = useState([]);
+
+  const authorization = Cookies.get("authorization");
   useEffect(() => {
-    const authorization = Cookies.get("authorization");
     if (!authorization) {
       navigate("/login");
     }
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_SERVER}/api/v1/user/${query}`, {
+        headers: {
+          Authorization: `Bearer ${authorization}`,
+        },
+      })
+      .then(({ data }) => {
+        setUser(data);
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [query]);
   return (
     <>
       <Navbar />
@@ -20,11 +40,26 @@ const HomePage = () => {
           </h1>
           <p className="text-lg font-medium">"User Account Balance"</p>
         </div>
+        <input
+          type="text"
+          className="w-full py-2 pl-3 rounded-md focus:outline-none border mt-8"
+          placeholder="Search Friend"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
         <div className="w-full mt-4 md:max-h-[50vh] overflow-auto">
-          <div className="flex mb-2 justify-between items-center">
-            <p className="text-lg font-medium">User Name</p>
-            <button className="btnPrimarySmall">Send</button>
-          </div>
+          {user &&
+            user.map((item) => {
+              return (
+                <div
+                  key={item._id}
+                  className="flex mb-2 justify-between items-center"
+                >
+                  <p className="text-lg font-medium">User Name</p>
+                  <button className="btnPrimarySmall">Send</button>
+                </div>
+              );
+            })}
         </div>
       </div>
     </>
