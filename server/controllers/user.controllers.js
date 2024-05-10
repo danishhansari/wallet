@@ -37,6 +37,7 @@ const registerUser = async (req, res) => {
         userID: newUser._id,
         balance: (Math.random() * 10000 + 1).toFixed(2),
       });
+      newUser.password = undefined;
       return res.status(201).json({ message: "Register successful", newUser });
     });
   } catch (error) {

@@ -4,8 +4,10 @@ import { z } from "zod";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const loginSchema = z.object({
     username: z.string().min(3).max(15).trim(),
     password: z.string().min(6).max(18).trim(),
@@ -25,8 +27,9 @@ const LoginPage = () => {
           console.log(data);
           const expiryDate = new Date();
           expiryDate.setDate(expiryDate.getDate() + 90);
-          Cookies.set("token", data.authToken, { expires: expiryDate });
+          Cookies.set("authorization", data.authToken, { expires: expiryDate });
           toast.success("Logged in successfully");
+          navigate("/");
         })
         .catch((err) => {
           console.log(err);

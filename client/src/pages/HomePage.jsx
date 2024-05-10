@@ -1,5 +1,15 @@
+import { useEffect } from "react";
 import Navbar from "../components/Navbar";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 const HomePage = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const authorization = Cookies.get("authorization");
+    if (!authorization) {
+      navigate("/login");
+    }
+  }, []);
   return (
     <>
       <Navbar />
