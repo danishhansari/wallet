@@ -115,4 +115,11 @@ const searchUserProfile = async (req, res) => {
   return res.status(200).json(user);
 };
 
-export { registerUser, loginUser, editProfile, searchUserProfile };
+const getCurrentUser = (req, res) => {
+  const userID = req.userID;
+
+  const user = User.findById(userID);
+  return res.status(200).json(user);
+};
+
+export { registerUser, loginUser, editProfile, searchUserProfile, getCurrentUser };
