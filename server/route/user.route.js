@@ -14,6 +14,6 @@ router.post("/signup", registerUser);
 router.post("/signin", loginUser);
 router.post("/current-user", verifyJWT, getCurrentUser);
 router.patch("/edit-profile", verifyJWT, editProfile);
-router.get("/:q", verifyJWT, searchUserProfile);
+router.post("/", searchUserProfile);
 
 export default router;

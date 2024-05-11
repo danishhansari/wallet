@@ -103,7 +103,9 @@ const editProfile = async (req, res) => {
 };
 
 const searchUserProfile = async (req, res) => {
-  const query = req.params.q || "";
+  const { query } = req.body || "";
+  console.log(query);
+
   const user = await User.find({
     $or: [
       { firstName: { $regex: query, $options: "i" } },
@@ -122,4 +124,10 @@ const getCurrentUser = (req, res) => {
   return res.status(200).json(user);
 };
 
-export { registerUser, loginUser, editProfile, searchUserProfile, getCurrentUser };
+export {
+  registerUser,
+  loginUser,
+  editProfile,
+  searchUserProfile,
+  getCurrentUser,
+};

@@ -10,7 +10,7 @@ import { verifyJWT } from "../middleware/index.middleware.js";
 
 const router = Router();
 
-router.get("/balance", verifyJWT, getAccountBalance);
+router.post("/balance", verifyJWT, getAccountBalance);
 router.post("/transfer", verifyJWT, transferMoney);
 
 export default router;

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const getAccountBalance = async (req, res) => {
   const userID = req.userID;
-  const userDetails = await Account.findById(userID);
+  const userDetails = await Account.findOne({ userID });
   return res.status(200).json({ userDetails });
 };
 

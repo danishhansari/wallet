@@ -7,20 +7,40 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [user, setUser] = useState([]);
+  const [balance, setBalance] = useState("");
 
   const authorization = Cookies.get("authorization");
-  useEffect(() => {
-    if (!authorization) {
-      navigate("/login");
-    }
-  }, []);
 
   useEffect(() => {
+    if (!authorization) {
+      return navigate("/login");
+    }
+    fetchUser();
+    fetchUserBalance(authorization);
+    // currentUser(authorization);
+  }, [query]);
+
+  const fetchUserBalance = (authorization) => {
+    console.log(authorization);
     axios
-      .get(`${import.meta.env.VITE_SERVER}/api/v1/user/${query}`, {
+      .post(`${import.meta.env.VITE_SERVER}/api/v1/account/balance`, null, {
         headers: {
           Authorization: `Bearer ${authorization}`,
         },
+      })
+      .then(({ data }) => {
+        console.log(data.userDetails);
+        setBalance(data.userDetails);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const fetchUser = () => {
+    axios
+      .post(`${import.meta.env.VITE_SERVER}/api/v1/user`, {
+        query: query,
       })
       .then(({ data }) => {
         setUser(data);
@@ -29,7 +49,23 @@ const HomePage = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [query]);
+  };
+
+  const currentUser = (authorization) => {
+    axios
+      .post(`${import.meta.env.VITE_SERVER}/api/v1/user/current-user`, null, {
+        headers: {
+          Authorization: `Bearer ${authorization}`,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <Navbar />
@@ -38,7 +74,7 @@ const HomePage = () => {
           <h1 className="headingCursive text-left text-3xl md:text-4xl">
             Hello {"user full Name"}
           </h1>
-          <p className="text-lg font-medium">"User Account Balance"</p>
+          <p className="text-lg md:text-xl font-semibold">${balance.balance}</p>
         </div>
         <input
           type="text"
@@ -55,7 +91,9 @@ const HomePage = () => {
                   key={item._id}
                   className="flex mb-2 justify-between items-center"
                 >
-                  <p className="text-lg font-medium">User Name</p>
+                  <p className="text-lg font-medium capitalize tracking-wide">
+                    {item.username}
+                  </p>
                   <button className="btnPrimarySmall">Send</button>
                 </div>
               );
