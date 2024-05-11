@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 8080;
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/account", accountRoute);
 
-connectDB("wallet")
+connectDB()
   .then(() => {
     app.listen(PORT, () => {
       console.log(`App is started running on ${PORT}`);
