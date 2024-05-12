@@ -1,9 +1,17 @@
 import Navbar from "../components/Navbar";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import Input from "../components/Input";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const EditProfilePage = () => {
+  const navigate = useNavigate();
   const handleEditProfile = () => {};
+  const logoutUser = () => {
+    Cookies.remove("authorization");
+    toast.success("logout");
+    navigate("/login");
+  };
 
   return (
     <>
@@ -25,6 +33,10 @@ const EditProfilePage = () => {
                 onClick={handleEditProfile}
               >
                 Submit
+              </button>
+
+              <button className="btnSecondary" onClick={logoutUser}>
+                Log out
               </button>
             </div>
           </form>

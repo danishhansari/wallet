@@ -73,7 +73,9 @@ const HomePage = () => {
           <h1 className="headingCursive text-left text-3xl md:text-4xl">
             Hello {currentUser.name}
           </h1>
-          <p className="text-lg md:text-xl font-semibold">${balance.balance}</p>
+          <p className="text-lg md:text-xl font-semibold">
+            ${balance.balance}
+          </p>
         </div>
         <input
           type="text"
