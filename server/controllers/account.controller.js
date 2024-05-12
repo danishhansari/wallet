@@ -1,4 +1,5 @@
 import Account from "../models/account.models.js";
+import Transaction from "../models/transaction.models.js";
 import mongoose from "mongoose";
 
 const getAccountBalance = async (req, res) => {
@@ -27,6 +28,22 @@ const transferMoney = async (req, res) => {
     await session.abortTransaction();
     return res.status(403).json({ message: "Receive is not exists" });
   }
+
+  const senderTransaction = new Transaction({
+    userID: sender._id,
+    counterUser: receiver._id,
+    amount: -amount,
+    transactionType: "Debit",
+  });
+  await senderTransaction.save().session(session);
+
+  const receiverTransaction = new Transaction({
+    userID: receiver._id,
+    counterUser: sender._id,
+    amount: amount,
+    transactionType: "Credit",
+  });
+  await receiverTransaction.save().session(session);
 
   const senderAccount = await Account.findOneAndUpdate(
     { userID: sender.userID },
