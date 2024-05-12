@@ -110,7 +110,9 @@ const searchUserProfile = async (req, res) => {
       { firstName: { $regex: query, $options: "i" } },
       { username: { $regex: query, $options: "i" } },
     ],
-  }).select("-password");
+  })
+    .select("-password")
+    .lean();
   return res.status(200).json(user);
 };
 
