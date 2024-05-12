@@ -29,35 +29,42 @@ const transferMoney = async (req, res) => {
     return res.status(403).json({ message: "Receive is not exists" });
   }
 
-  const senderTransaction = new Transaction({
-    userID: sender._id,
-    counterUser: receiver._id,
-    amount: -amount,
-    transactionType: "Debit",
-  });
-  await senderTransaction.save().session(session);
-
-  const receiverTransaction = new Transaction({
-    userID: receiver._id,
-    counterUser: sender._id,
-    amount: amount,
-    transactionType: "Credit",
-  });
-  await receiverTransaction.save().session(session);
-
   const senderAccount = await Account.findOneAndUpdate(
     { userID: sender.userID },
     { $inc: { balance: -amount } }
   ).session(session);
 
-  console.log("Sender", senderAccount);
   const receiverAccount = await Account.findOneAndUpdate(
     { userID: receiver.userID },
     { $inc: { balance: amount } }
   ).session(session);
-  console.log("Receiver", receiverAccount);
 
   await session.commitTransaction();
+
+  try {
+    const senderTransaction = new Transaction({
+      userID: sender._id,
+      counterUser: receiver._id,
+      amount: -amount,
+      transactionType: "Debit",
+    });
+    await senderTransaction.save();
+
+    const receiverTransaction = new Transaction({
+      userID: receiver._id,
+      counterUser: sender._id,
+      amount: amount,
+      transactionType: "Credit",
+    });
+    await receiverTransaction.save();
+  } catch (error) {
+    return res
+      .status(403)
+      .json({
+        message: "transaction is completed, Just taking some to verify",
+      });
+  }
+
   return res.status(200).json({ message: "Transaction successfull" });
 };
 export { getAccountBalance, transferMoney };

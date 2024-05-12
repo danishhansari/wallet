@@ -25,4 +25,4 @@ const transactionSchema = new Schema(
 );
 
 const Transaction = model("Transaction", transactionSchema);
-export default Transaction
+export default Transaction;
