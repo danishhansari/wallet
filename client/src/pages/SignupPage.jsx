@@ -8,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 const SignupPage = () => {
   const navigate = useNavigate();
   const signupSchema = z.object({
-    firstName: z.string().min(3).max(15).trim(),
-    lastName: z.string().min(3).max(15).optional(),
+    name: z.string().min(3).max(15).trim(),
     username: z.string().min(3).max(15).trim(),
     password: z.string().min(6).max(18).trim(),
   });
@@ -47,7 +46,7 @@ const SignupPage = () => {
     <>
       <Toaster />
       <div className="navAndPage">
-        <Navbar type="signup" />
+        <Navbar text={"Login"} route="/login" />
         <div className="whFull flex justify-center mt-16 md:mt-20">
           <div className="max-w-[800] mx-auto p-2 columnFlex">
             <h2 className="headingCursive">Sign UP</h2>
@@ -60,23 +59,18 @@ const SignupPage = () => {
               <div className="columnFlex gap-y-2">
                 <Input
                   type="text"
-                  name="firstName"
-                  placeholder="Enter your FirstName"
-                />
-                <Input
-                  type="text"
-                  name="lastName"
-                  placeholder="Enter your Lastname (optional)"
+                  name="name"
+                  placeholder="Name"
                 />
                 <Input
                   type="text"
                   name="username"
-                  placeholder="Enter your Username"
+                  placeholder="Username"
                 />
                 <Input
                   type="password"
                   name="password"
-                  placeholder="Enter your password"
+                  placeholder="Password"
                 />
 
                 <button

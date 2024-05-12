@@ -49,7 +49,7 @@ const LoginPage = () => {
     <>
       <Toaster />
       <div className="navAndPage">
-        <Navbar type="login" />
+        <Navbar text={"Signup"} route={"/signup"} />
         <div className="whFull flex justify-center mt-16 md:mt-24">
           <div className="max-w-[800] mx-auto p-2 columnFlex">
             <h2 className="headingCursive">Log in</h2>
@@ -63,12 +63,12 @@ const LoginPage = () => {
                 <Input
                   type="text"
                   name="username"
-                  placeholder="Enter your username"
+                  placeholder="Username"
                 />
                 <Input
                   type="password"
                   name="password"
-                  placeholder="Enter your password"
+                  placeholder="Password"
                 />
 
                 <button className="formBtn" type="submit" onClick={handleLogin}>

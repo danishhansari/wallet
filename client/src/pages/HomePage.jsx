@@ -7,6 +7,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [user, setUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
   const [balance, setBalance] = useState("");
 
   const authorization = Cookies.get("authorization");
@@ -17,7 +18,7 @@ const HomePage = () => {
     }
     fetchUser();
     fetchUserBalance(authorization);
-    // currentUser(authorization);
+    fetchCurrentUser(authorization);
   }, [query]);
 
   const fetchUserBalance = (authorization) => {
@@ -29,7 +30,6 @@ const HomePage = () => {
         },
       })
       .then(({ data }) => {
-        console.log(data.userDetails);
         setBalance(data.userDetails);
       })
       .catch((err) => {
@@ -44,14 +44,13 @@ const HomePage = () => {
       })
       .then(({ data }) => {
         setUser(data);
-        console.log(data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const currentUser = (authorization) => {
+  const fetchCurrentUser = (authorization) => {
     axios
       .post(`${import.meta.env.VITE_SERVER}/api/v1/user/current-user`, null, {
         headers: {
@@ -59,20 +58,20 @@ const HomePage = () => {
         },
       })
       .then(({ data }) => {
-        console.log(data);
+        setCurrentUser(data[0]);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.message);
       });
   };
 
   return (
     <>
-      <Navbar />
+      <Navbar text={"Edit Profile"} route={"/edit-profile"} />
       <div className="mt-8 max-w-[600px] mx-auto px-2">
         <div className="flex justify-between items-center">
           <h1 className="headingCursive text-left text-3xl md:text-4xl">
-            Hello {"user full Name"}
+            Hello {currentUser.name}
           </h1>
           <p className="text-lg md:text-xl font-semibold">${balance.balance}</p>
         </div>
