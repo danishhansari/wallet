@@ -5,8 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const registerSchema = z.object({
-  firstName: z.string().min(3).max(15).trim(),
-  lastName: z.string().min(3).max(15).optional(),
+  name: z.string().min(3).max(15).trim(),
   username: z.string().min(3).max(15).trim(),
   password: z.string().min(6).max(18).trim(),
 });
@@ -80,7 +79,7 @@ const loginUser = async (req, res) => {
 
 const editProfile = async (req, res) => {
   const userID = req.userID;
-  const { firstName, lastName, password } = req.body;
+  const { name, password } = req.body;
   if (!firstName && !lastName && !password) {
     return res.status(200).json({ message: "All data is up to dated" });
   }
@@ -120,7 +119,8 @@ const searchUserProfile = async (req, res) => {
 const getCurrentUser = (req, res) => {
   const userID = req.userID;
 
-  const user = User.findById(userID);
+  console.log(userID, "current user");
+  const user = User.find({ userID });
   return res.status(200).json(user);
 };
 

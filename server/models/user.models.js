@@ -1,17 +1,11 @@
 import { model, Schema } from "mongoose";
 
 const userSchema = new Schema({
-  firstName: {
+  name: {
     type: String,
     minLength: 3,
     maxLength: 15,
     required: true,
-    trim: true,
-  },
-  lastName: {
-    type: String,
-    minLength: 3,
-    maxLength: 15,
     trim: true,
   },
   username: {
