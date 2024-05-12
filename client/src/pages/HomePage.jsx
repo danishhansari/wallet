@@ -93,7 +93,12 @@ const HomePage = () => {
                   <p className="text-lg font-medium capitalize tracking-wide">
                     {item.username}
                   </p>
-                  <button className="btnPrimarySmall">Send</button>
+                  <button
+                    className="btnPrimarySmall"
+                    onClick={() => navigate(`/transfer/${item._id}`)}
+                  >
+                    Send
+                  </button>
                 </div>
               );
             })}

@@ -3,6 +3,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";
 import EditProfilePage from "./pages/EditProfilePage";
+import TransferPage from "./pages/TransferPage";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
           <Route path="/edit-profile" element={<EditProfilePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/transfer/:id" element={<TransferPage />} />
         </Routes>
       </Router>
     </>
