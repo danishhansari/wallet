@@ -8,6 +8,15 @@ const getAccountBalance = async (req, res) => {
   return res.status(200).json({ userDetails });
 };
 
+const getTransactionHistory = async (req, res) => {
+  const userID = req.userID;
+  console.log(userID);
+  const transaction = await Transaction.find({
+    userID,
+  });
+  return res.status(200).json(transaction);
+};
+
 const transferMoney = async (req, res) => {
   const session = await mongoose.startSession();
 
@@ -16,6 +25,9 @@ const transferMoney = async (req, res) => {
   const { to, amount } = req.body;
 
   const sender = await Account.findOne({ userID }).session(session);
+  if (amount <= 0) {
+    return res.status(403).json({ message: "Please add a proper amount" });
+  }
   if (sender.balance < amount) {
     await session.abortTransaction();
     return res.status(403).json({ message: "Insufficient money" });
@@ -42,29 +54,24 @@ const transferMoney = async (req, res) => {
   await session.commitTransaction();
 
   try {
-    const senderTransaction = new Transaction({
+    const senderTransaction = await Transaction.create({
       userID: sender._id,
       counterUser: receiver._id,
       amount: -amount,
       transactionType: "Debit",
     });
-    await senderTransaction.save();
-
-    const receiverTransaction = new Transaction({
+    const receiverTransaction = await Transaction.create({
       userID: receiver._id,
       counterUser: sender._id,
       amount: amount,
       transactionType: "Credit",
     });
-    await receiverTransaction.save();
   } catch (error) {
-    return res
-      .status(403)
-      .json({
-        message: "transaction is completed, Just taking some to verify",
-      });
+    return res.status(403).json({
+      message: "transaction is completed, Just taking some to verify",
+    });
   }
 
   return res.status(200).json({ message: "Transaction successfull" });
 };
-export { getAccountBalance, transferMoney };
+export { getAccountBalance, transferMoney, getTransactionHistory };
