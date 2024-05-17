@@ -9,7 +9,6 @@ const HomePage = () => {
   const [user, setUser] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [balance, setBalance] = useState("");
-
   const authorization = Cookies.get("authorization");
 
   useEffect(() => {

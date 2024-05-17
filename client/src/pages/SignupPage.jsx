@@ -1,11 +1,12 @@
 import Navbar from "../components/Navbar";
 import Input from "../components/Input";
 import { z } from "zod";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
+  let toastId = null;
   const navigate = useNavigate();
   const signupSchema = z.object({
     name: z.string().min(3).max(15).trim(),
@@ -13,6 +14,10 @@ const SignupPage = () => {
     password: z.string().min(6).max(18).trim(),
   });
 
+  const showToast = (toastVarient, msg) => {
+    if (toastId !== null) toast.dismiss(toastId);
+    toastId = toastVarient(msg);
+  };
   const handleSignup = (e) => {
     e.preventDefault();
     const form = new FormData(signupForm);
@@ -25,26 +30,29 @@ const SignupPage = () => {
         .post(`${import.meta.env.VITE_SERVER}/api/v1/user/signup`, formData)
         .then(({ data }) => {
           console.log(data);
-          toast.success("Register successfully");
+          showToast(toast.success, "Register successfully");
           navigate("/");
         })
         .catch((err) => {
           console.log(err);
-          toast.error(err.message);
+          showToast(toast.error, err.message);
         })
         .finally(() => {
           toast.dismiss(loading);
         });
     } catch (error) {
       error.errors.forEach((err) => {
-        return toast.error(err.message.replace("String", err.path[0]));
+        // return toast.error(err.message.replace("String", err.path[0]));
+        return showToast(
+          toast.error,
+          err.message.replace("String", err.path[0])
+        );
       });
     }
   };
 
   return (
     <>
-      <Toaster />
       <div className="navAndPage">
         <Navbar text={"Login"} route="/login" />
         <div className="whFull flex justify-center mt-16 md:mt-20">
@@ -57,21 +65,9 @@ const SignupPage = () => {
 
             <form className="mt-8 md:mt-16 w-full" id="signupForm">
               <div className="columnFlex gap-y-2">
-                <Input
-                  type="text"
-                  name="name"
-                  placeholder="Name"
-                />
-                <Input
-                  type="text"
-                  name="username"
-                  placeholder="Username"
-                />
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                />
+                <Input type="text" name="name" placeholder="Name" />
+                <Input type="text" name="username" placeholder="Username" />
+                <Input type="password" name="password" placeholder="Password" />
 
                 <button
                   className="formBtn"

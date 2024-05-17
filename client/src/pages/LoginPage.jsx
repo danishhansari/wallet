@@ -1,17 +1,25 @@
 import Navbar from "../components/Navbar";
 import Input from "../components/Input";
 import { z } from "zod";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  let toastId = null;
+
   const navigate = useNavigate();
   const loginSchema = z.object({
     username: z.string().min(3).max(15).trim(),
     password: z.string().min(6).max(18).trim(),
   });
+  const showToast = (toastVarient, msg) => {
+    if (toastId !== null) toast.dismiss(toastId);
+    toastId = toastVarient(msg, {
+      duration: 4000,
+    });
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -28,26 +36,28 @@ const LoginPage = () => {
           const expiryDate = new Date();
           expiryDate.setDate(expiryDate.getDate() + 90);
           Cookies.set("authorization", data.authToken, { expires: expiryDate });
-          toast.success("Logged in successfully");
+          showToast(toast.success, "Logged in successfully");
           navigate("/");
         })
         .catch((err) => {
           console.log(err);
-          toast.error(err.message);
+          showToast(toast.error, err.message);
         })
         .finally(() => {
           toast.dismiss(loading);
         });
     } catch (error) {
       error.errors.forEach((err) => {
-        return toast.error(err.message.replace("String", err.path[0]));
+        return showToast(
+          toast.error,
+          err.message.replace("String", err.path[0])
+        );
       });
     }
   };
 
   return (
     <>
-      <Toaster />
       <div className="navAndPage">
         <Navbar text={"Signup"} route={"/signup"} />
         <div className="whFull flex justify-center mt-16 md:mt-24">
@@ -60,16 +70,8 @@ const LoginPage = () => {
 
             <form className="mt-12 md:mt-16 w-full" id="loginForm">
               <div className="columnFlex gap-y-2">
-                <Input
-                  type="text"
-                  name="username"
-                  placeholder="Username"
-                />
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                />
+                <Input type="text" name="username" placeholder="Username" />
+                <Input type="password" name="password" placeholder="Password" />
 
                 <button className="formBtn" type="submit" onClick={handleLogin}>
                   Submit
