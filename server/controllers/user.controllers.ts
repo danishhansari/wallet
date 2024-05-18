@@ -1,5 +1,5 @@
-import User from "../models/user.models";
-import Account from "../models/account.models";
+import User from "../models/user.models.js";
+import Account from "../models/account.models.js";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

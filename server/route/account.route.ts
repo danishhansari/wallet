@@ -3,8 +3,8 @@ import {
   getAccountBalance,
   transferMoney,
   getTransactionHistory,
-} from "../controllers/account.controller";
-import { verifyJWT } from "../middleware/index.middleware";
+} from "../controllers/account.controller.js";
+import { verifyJWT } from "../middleware/index.middleware.js";
 
 const router = Router();
 

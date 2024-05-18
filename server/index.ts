@@ -1,8 +1,8 @@
 import express, { json } from "express";
-import { connectDB } from "./db/index";
+import { connectDB } from "./db/index.js";
 import cors from "cors";
-import userRoute from "./route/user.route";
-import accountRoute from "./route/account.route";
+import userRoute from "./route/user.route.js";
+import accountRoute from "./route/account.route.js";
 
 const app: express.Application = express();
 app.use(cors());

@@ -1,5 +1,5 @@
-import Account from "../models/account.models";
-import Transaction from "../models/transaction.models";
+import Account from "../models/account.models.js";
+import Transaction from "../models/transaction.models.js";
 import mongoose from "mongoose";
 import { Request, Response } from "express";
 
