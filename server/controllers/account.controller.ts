@@ -1,14 +1,15 @@
-import Account from "../models/account.models.js";
-import Transaction from "../models/transaction.models.js";
+import Account from "../models/account.models";
+import Transaction from "../models/transaction.models";
 import mongoose from "mongoose";
+import { Request, Response } from "express";
 
-const getAccountBalance = async (req, res) => {
+const getAccountBalance = async (req: Request, res: Response) => {
   const userID = req.userID;
   const userDetails = await Account.findOne({ userID });
   return res.status(200).json({ userDetails });
 };
 
-const getTransactionHistory = async (req, res) => {
+const getTransactionHistory = async (req: Request, res: Response) => {
   const userID = req.userID;
   console.log(userID);
   const transaction = await Transaction.find({
@@ -17,7 +18,7 @@ const getTransactionHistory = async (req, res) => {
   return res.status(200).json(transaction);
 };
 
-const transferMoney = async (req, res) => {
+const transferMoney = async (req: Request, res: Response) => {
   const session = await mongoose.startSession();
 
   session.startTransaction();
@@ -25,6 +26,10 @@ const transferMoney = async (req, res) => {
   const { to, amount } = req.body;
 
   const sender = await Account.findOne({ userID }).session(session);
+  if (!sender) {
+    await session.abortTransaction();
+    return res.status(404).json({ message: "Sender account not found" });
+  }
   if (amount <= 0) {
     return res.status(403).json({ message: "Please add a proper amount" });
   }
@@ -35,7 +40,6 @@ const transferMoney = async (req, res) => {
   console.log("Sender", sender);
 
   const receiver = await Account.findOne({ userID: to }).session(session);
-  console.log(receiver, "Receiver");
   if (!receiver) {
     await session.abortTransaction();
     return res.status(403).json({ message: "Receive is not exists" });

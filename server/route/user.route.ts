@@ -5,8 +5,8 @@ import {
   editProfile,
   searchUserProfile,
   getCurrentUser,
-} from "../controllers/user.controllers.js";
-import { verifyJWT } from "../middleware/index.middleware.js";
+} from "../controllers/user.controllers";
+import { verifyJWT } from "../middleware/index.middleware";
 
 const router = Router();
 
