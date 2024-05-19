@@ -4,7 +4,10 @@
     "moduleResolution": "NodeNext",
     "target": "ES2020",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true
   },
-  "include": ["**/*"]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
 }

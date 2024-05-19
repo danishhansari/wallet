@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsc && nodemon --env-file ./.env dist/index.js",
+    "build": "tsc",
+    "start": "nodemon --env-file ./.env dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,6 +16,7 @@
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.6",
+    "@vercel/node": "^3.1.5",
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
